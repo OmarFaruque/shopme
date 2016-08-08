@@ -1,0 +1,61 @@
+<?php
+/*
+ * Reguster Custom Post Type
+ */
+// Register Post Type Product
+add_action('init', 'abm_product');
+/**
+ * Register post type Product.
+ *
+ */
+function abm_product() {
+	$labels = array(
+		'name'               => _x('Products', 'post type general name', 'ABM Water'),
+		'singular_name'      => _x('Product', 'post type singular name', 'ABM Water'),
+		'menu_name'          => _x('Products', 'admin menu', 'ABM Water'),
+		'name_admin_bar'     => _x('Product', 'add new on admin bar', 'ABM Water'),
+		'add_new'            => _x('Add New', 'Product', 'ABM Water'),
+		'add_new_item'       => __('Add New Product', 'ABM Water'),
+		'new_item'           => __('New Product', 'ABM Water'),
+		'edit_item'          => __('Edit Product', 'ABM Water'),
+		'view_item'          => __('View Product', 'ABM Water'),
+		'all_items'          => __('All Products', 'ABM Water'),
+		'search_items'       => __('Search Products', 'ABM Water'),
+		'parent_item_colon'  => __('Parent Products:', 'ABM Water'),
+		'not_found'          => __('No Products found.', 'ABM Water'),
+		'not_found_in_trash' => __('No Products found in Trash.', 'ABM Water')
+	);
+
+	$args = array(
+		'labels'             => $labels,
+		'public'             => true,
+		'publicly_queryable' => true,
+		'show_ui'            => true,
+		'show_in_menu'       => true,
+		'query_var'          => true,
+		'rewrite'            => array('slug'            => 'product'),
+		'capability_type'    => 'post',
+		'has_archive'        => true,
+		'hierarchical'       => true,
+		'menu_position'      => null,
+		'supports'           => array('title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments'),
+		'taxonomies'         => array('products-category')
+	);
+
+	register_post_type('product', $args);
+}
+
+//custom Textonomy
+add_action('init', 'registerTaxonomy');
+
+function registerTaxonomy() {
+	register_taxonomy(
+		'product-category',
+		'product',
+		array(
+			'label'        => __('Product Category'),
+			'rewrite'      => array('slug'      => 'product-category'),
+			'hierarchical' => true
+		)
+	);
+}

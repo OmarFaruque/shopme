@@ -192,3 +192,20 @@ form#searchform label {
 .banner_img img {
     width: 100%;
 }
+ul.custom-list-group li {
+    list-style: none;
+}
+ul.custom-list-group li {
+    list-style: none;
+    border-bottom: 1px solid #eee;
+    line-height: 25px;
+}
+ul.custom-list-group li a {
+    display: block;
+}
+.singleItem {
+    border-right: 1px solid #ddd;
+}
+.s_box .singleItem:first-child {
+    border-left: 1px solid #eee;
+}

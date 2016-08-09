@@ -135,10 +135,42 @@ if (has_nav_menu('top_menu')) {
 							</div>
 							<div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
 
-							</div>
+<?php
+$topTaxs = get_terms('product-category', array('parent' => 0));
+$l_count = 0;
+foreach ($topTaxs as $s_tax):
+
+echo ($l_count%4 == 0)?'<div class="s_box">':'';
+$thumbImage = get_tax_meta($s_tax->term_id, 'ba_image_field_id');
+$imgAlt     = get_post_meta($thumbImage['id'], '_wp_attachment_image_alt', true);
+$termChilds = get_term_children($s_tax->term_id, 'product-category');
+?>
+											<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 singleItem">
+												<h4 class="text-center"><?=$s_tax->name;?></h4>
+												<img class="img-responsive center-block" src="<?=$thumbImage['url'];?>" alt="<?=$imgAlt;?>">
+												<ul class="list-group custom-list-group mt10">
+<?php
+for ($i = 0;count($termChilds) > $i; $i++) {
+	$singleT = get_term_by('id', $termChilds[$i], 'product-category');
+	if ($singleT->count > 0) {
+		?>
+																	<li><a href="<?=home_url('/product-category/'.$singleT->slug.'/');?>"><?=$singleT->name;
+		?></a></li>
+		<?php }}?>
+													<li> <a href="<?=home_url('/product-category/'.$s_tax->slug.'/');?>">See all</a></li>
+												</ul>
+
+											</div>
+<?php echo ($l_count%4 == 3)?'</div>':'';?>
+										<?php $l_count += 1;
+endforeach;
+?>
+</div>
 						</div>
 					</div>
 				</section>
+
+				<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5392e56256f58ac5"></script>
 <?php wp_footer();?>
 			</body>
 		</html>

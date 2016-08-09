@@ -411,6 +411,10 @@ function dynamic_css() {
 				if (!empty($get_option['custom_css_code'])) {
 					$css .= $get_option['custom_css_code'];
 				}
+				if (!empty($get_option['link_text_color'])) {
+					$css .= 'section.main_body li a { color: '.$get_option['link_text_color'].'; }';
+
+				}
 				$css .= '</style>';
 				return $css;
 			}

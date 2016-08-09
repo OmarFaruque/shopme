@@ -141,7 +141,12 @@ function themeSettingsPage() {
 					'type'	=> 	'color_picker'
 				),
 				array(
-					'title'	=> 	'Hover Background',
+					'title'	=> 	'Link Text Color',
+					'note'	=>	'Link Text Color',
+					'type'	=> 	'color_picker'
+				),
+				array(
+					'title'	=> 	'Link Hover Background',
 					'note'	=>	'Item Hover Background Color',
 					'type'	=> 	'color_picker'
 				),

@@ -2,6 +2,8 @@
 /*
  * Default Theme Function file
  */
+// Add Thumbnail Images Support
+add_theme_support('post-thumbnails');
 
 if (!function_exists('addShopmeThemeScript')) {
 	function addShopmeThemeScript() {
@@ -30,3 +32,4 @@ register_nav_menus(array(
 require_once ('ch_admin_option/admin-function.php');
 require_once ('css/dynamic.php');
 require_once ('inc_function/reg_custom_post.php');
+require_once ('inc_function/metabox.php');

@@ -412,9 +412,30 @@ function dynamic_css() {
 					$css .= $get_option['custom_css_code'];
 				}
 				if (!empty($get_option['link_text_color'])) {
-					$css .= 'section.main_body li a { color: '.$get_option['link_text_color'].'; }';
+					$css .= 'section.main_body li a, section.footer li a { color: '.$get_option['link_text_color'].'; }';
+
+				}
+				if (!empty($get_option['default_heading_color'])) {
+					$css .= 'h1, h2, h3, h4, h5, h6, ul.sidebar_cat > li > a { color: '.$get_option['default_heading_color'].'; }';
+
+				}
+				if (!empty($get_option['link_hover_background'])) {
+					$css .= 'section.main_body ul li a:hover, section.footer ul li a:hover{background:'.$get_option['link_hover_background'].';}';
+
+				}
+				if (!empty($get_option['text_color_for_colored_background'])) {
+					$css .= 'section.main_body ul li a:hover, section.footer ul li a:hover{color:'.$get_option['text_color_for_colored_background'].';}';
+
+				}
+				if (!empty($get_option['footer_background_color'])) {
+					$css .= 'section.footer.top {   background-color: '.$get_option['footer_background_color'].'; }';
+
+				}
+				if (!empty($get_option['footer_background_taxture'])) {
+					$css .= 'section.footer.top {   background-image: url('.$get_option['footer_background_taxture'].'); }';
 
 				}
 				$css .= '</style>';
-				return $css;
+				echo $css;
 			}
+			add_action('wp_head', 'dynamic_css');

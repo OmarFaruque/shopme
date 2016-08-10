@@ -20,7 +20,7 @@ class ch_option{
 	/*
 	* get single data from anyware using item title slug
 	*/
-	public function ch_get_option($ch_option){
+	public function ch_get_opt($ch_option){
 		$ch_get_option = get_option('ch_theme_option' ); 
 		return $ch_get_option[$this->ch_stringReplace($ch_option)];
 	}

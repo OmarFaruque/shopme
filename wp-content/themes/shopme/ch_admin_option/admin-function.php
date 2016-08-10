@@ -4,6 +4,13 @@
 */
 ob_start();
 require_once('save_option.php');
+require_once('css/dynamic.php');
+
+function ch_get_option($rdata){
+	$ch_data = new ch_option;
+	return $ch_data->ch_get_opt($rdata);
+} 
+
 function addThemeMenuItem() {
 	//add_menu_page("Theme Panel", "Theme Panel", "manage_options", "theme-panel", "theme_settings_page", null, 99);
 	add_submenu_page('themes.php', "Theme Option", "Theme Option", "manage_options", "theme-panel", "themeSettingsPage", null, 99);
@@ -111,6 +118,35 @@ function themeSettingsPage() {
 					'type' => 'text'
 				),
 				array(
+					'title' => 'Payment gateway logo',
+					'note' => 'Uploade site payment gateway logos.',
+					'type' => 'upload'	
+				),
+				array(
+					'title' => 'Our Brand (1)',
+					'note' => 'Uploade brand logo & set url.',
+					'type'	=> 	'list',
+					'item'	=>	array('title', 'url', 'image')
+				),
+				array(
+					'title' => 'Our Brand (2)',
+					'note' => 'Uploade brand logo & set url.',
+					'type'	=> 	'list',
+					'item'	=>	array('title', 'url', 'image')
+				),
+				array(
+					'title' => 'Our Brand (3)',
+					'note' => 'Uploade brand logo & set url.',
+					'type'	=> 	'list',
+					'item'	=>	array('title', 'url', 'image')
+				),
+				array(
+					'title' => 'Our Brand (4)',
+					'note' => 'Uploade brand logo & set url.',
+					'type'	=> 	'list',
+					'item'	=>	array('title', 'url', 'image')
+				),
+				array(
 					'title' => 'Tracking Code',
 					'note' => 'Paste your Google analytics (or other) code here.',
 					'type' => 'textarea'
@@ -141,6 +177,11 @@ function themeSettingsPage() {
 					'type'	=> 	'color_picker'
 				),
 				array(
+					'title'	=> 	'Default Heading Color',
+					'note'	=>	'All Heading Default Color',
+					'type'	=> 	'color_picker'
+				),
+				array(
 					'title'	=> 	'Link Text Color',
 					'note'	=>	'Link Text Color',
 					'type'	=> 	'color_picker'
@@ -156,9 +197,19 @@ function themeSettingsPage() {
 					'type'	=> 	'color_picker'
 				),
 				array(
-					'title' => 'Text Color for Main Colored Background',
-					'note' => 'Choose your color style for all content/objects that have your main color as background. ',
-					'type' => 'color_picker'
+					'title' => 'Text Color for Colored Background',
+					'note' 	=> 'Choose your color style for all content/objects that have your main color as background. ',
+					'type' 	=> 'color_picker'
+				),
+				array(
+					'title' => 'Footer Background Color',
+					'note' 	=> 'Choose your footer background color.',
+					'type' 	=> 'color_picker'	
+				),
+				array(
+					'title'	=>	'Footer Background Taxture',
+					'note'	=> 	'Choose Footer Background Taxture.',
+					'type'	=> 	'upload'
 				),
 				array(
 					'title' => 'Direction for Animation',
@@ -323,7 +374,7 @@ function themeSettingsPage() {
 								case 'upload':
 								?>
 								<div class="partRight">
-									<input type="text" value="<?= $ch_data->ch_get_option($singBody[$i]['title']); ?>" name="<?=$ch_data->ch_stringReplace($singBody[$i]['title']);?>" id="id-<?=$ch_data->ch_stringReplace($singBody[$i]['title']);?>"/>
+									<input type="text" value="<?= $ch_data->ch_get_opt($singBody[$i]['title']); ?>" name="<?=$ch_data->ch_stringReplace($singBody[$i]['title']);?>" id="id-<?=$ch_data->ch_stringReplace($singBody[$i]['title']);?>"/>
 									<button class="button button-submit add-image">Add Image</button>
 								</div>
 								<?php
@@ -340,14 +391,14 @@ function themeSettingsPage() {
 								case 'text':
 								?>
 								<div class="partRight">
-									<input type="text" style="width:99%;" value="<?= $ch_data->ch_get_option($singBody[$i]['title']); ?>" name="<?=$ch_data->ch_stringReplace($singBody[$i]['title']);?>" id="id-<?=$ch_data->ch_stringReplace($singBody[$i]['title']);?>"/>
+									<input type="text" style="width:99%;" value="<?= $ch_data->ch_get_opt($singBody[$i]['title']); ?>" name="<?=$ch_data->ch_stringReplace($singBody[$i]['title']);?>" id="id-<?=$ch_data->ch_stringReplace($singBody[$i]['title']);?>"/>
 								</div>
 								<?php
 								break;
 								case 'textarea':
 								?>
 								<div class="partRight">
-									<textarea name="<?=$ch_data->ch_stringReplace($singBody[$i]['title']);?>" id="id-<?=$ch_data->ch_stringReplace($singBody[$i]['title']);?>"><?= $ch_data->ch_get_option($singBody[$i]['title']); ?></textarea>
+									<textarea name="<?=$ch_data->ch_stringReplace($singBody[$i]['title']);?>" id="id-<?=$ch_data->ch_stringReplace($singBody[$i]['title']);?>"><?= $ch_data->ch_get_opt($singBody[$i]['title']); ?></textarea>
 								</div>
 								<?php
 								break;
@@ -359,7 +410,7 @@ function themeSettingsPage() {
 									<select name="<?=$ch_data->ch_stringReplace($singBody[$i]['title']);?>" id="id-<?=$ch_data->ch_stringReplace($singBody[$i]['title']);?>">
 										<option value="">Select <?=$singBody[$i]['title'];?> </option>
 										<?php foreach ($singBody[$i]['dropdown_value'] as $singleDropdown): ?>
-										<option <?= ($ch_data->ch_get_option($singBody[$i]['title']) == strtolower($singleDropdown) ?'selected':''); ?> value="<?=strtolower($singleDropdown);?>"><?=ucfirst($singleDropdown);?></option>
+										<option <?= ($ch_data->ch_get_opt($singBody[$i]['title']) == strtolower($singleDropdown) ?'selected':''); ?> value="<?=strtolower($singleDropdown);?>"><?=ucfirst($singleDropdown);?></option>
 										<?php endforeach;?>
 									</select>
 								</div>
@@ -368,7 +419,7 @@ function themeSettingsPage() {
 								case 'color_picker':
 								?>
 								<div class="partRight">
-									<input type="text" class="codeHouseColorPicker" value="<?= $ch_data->ch_get_option($singBody[$i]['title']); ?>" name="<?=$ch_data->ch_stringReplace($singBody[$i]['title']);?>" id="id-<?=$ch_data->ch_stringReplace($singBody[$i]['title']);?>">
+									<input type="text" class="codeHouseColorPicker" value="<?= $ch_data->ch_get_opt($singBody[$i]['title']); ?>" name="<?=$ch_data->ch_stringReplace($singBody[$i]['title']);?>" id="id-<?=$ch_data->ch_stringReplace($singBody[$i]['title']);?>">
 								</div>
 								<?php
 								break;
@@ -391,21 +442,21 @@ function themeSettingsPage() {
 												switch($s_item):
 													case 'image':
 														echo '<span><b>'.	$s_item.'</b></span>';
-														echo '<input type="text" value="'.$ch_data->ch_get_option($singBody[$i]['title'].'_'.$s_item).'" name="'.$ch_data->ch_stringReplace($singBody[$i]['title'].'_'.$s_item).'"/>';
+														echo '<input type="text" value="'.$ch_data->ch_get_opt($singBody[$i]['title'].'_'.$s_item).'" name="'.$ch_data->ch_stringReplace($singBody[$i]['title'].'_'.$s_item).'"/>';
 														echo '<button class="button button-submit add-image">Add Image</button>';
-														if(!empty($ch_data->ch_get_option($singBody[$i]['title'].'_'.$s_item))){
-															echo '<div class="imgPreview"><img src="'.$ch_data->ch_get_option($singBody[$i]['title'].'_'.$s_item).'"/></div>';
+														if(!empty($ch_data->ch_get_opt($singBody[$i]['title'].'_'.$s_item))){
+															echo '<div class="imgPreview"><img src="'.$ch_data->ch_get_opt($singBody[$i]['title'].'_'.$s_item).'"/></div>';
 														}
 													break;
 
 													case 'description':
 														echo '<span><b>'.	$s_item.'</b></span>';
-														echo '<textarea name="'.$ch_data->ch_stringReplace($singBody[$i]['title'].'_'.$s_item).'" id="id-'.$ch_data->ch_stringReplace($singBody[$i]['title'].'_'.$s_item).'">'.$ch_data->ch_get_option($singBody[$i]['title'].'_'.$s_item).'</textarea>';
+														echo '<textarea name="'.$ch_data->ch_stringReplace($singBody[$i]['title'].'_'.$s_item).'" id="id-'.$ch_data->ch_stringReplace($singBody[$i]['title'].'_'.$s_item).'">'.$ch_data->ch_get_opt($singBody[$i]['title'].'_'.$s_item).'</textarea>';
 													break;
 
 													default:
 														echo '<span><b>'.$s_item.'</b></span>';
-														echo '<input type="text" value="'.$ch_data->ch_get_option($singBody[$i]['title'].'_'.$s_item).'" name="'.$ch_data->ch_stringReplace($singBody[$i]['title'].'_'.$s_item).'"/>';
+														echo '<input type="text" value="'.$ch_data->ch_get_opt($singBody[$i]['title'].'_'.$s_item).'" name="'.$ch_data->ch_stringReplace($singBody[$i]['title'].'_'.$s_item).'"/>';
 												endswitch;
 											endforeach;
 										?>
@@ -415,8 +466,8 @@ function themeSettingsPage() {
 								<div class="imgPreview">
 									<span><i><?=$singBody[$i]['note'];?></i></span>
 									<?php 	
-									if($singBody[$i]['type'] == 'upload' && !empty($ch_data->ch_get_option($singBody[$i]['title']) ) ) {
-										echo '<img src="'.$ch_data->ch_get_option($singBody[$i]['title']).'" alt="'.$singBody[$i]['title'].'">';
+									if($singBody[$i]['type'] == 'upload' && !empty($ch_data->ch_get_opt($singBody[$i]['title']) ) ) {
+										echo '<img src="'.$ch_data->ch_get_opt($singBody[$i]['title']).'" alt="'.$singBody[$i]['title'].'">';
 									}
 									?>
 								</div>

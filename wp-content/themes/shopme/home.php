@@ -35,11 +35,9 @@
 				if ( $paged >= 2 || $page >= 2 )
 				echo ' | ' . sprintf( __( 'Page %s', 'shape' ), max( $paged, $page ) );
 				?></title>
-				<?php $ch_data = new ch_option; ?>
-				<link rel="shortcut icon" type="image/png" href="<?= $ch_data->ch_get_option('favicon'); ?>"/>
+				<link rel="shortcut icon" type="image/png" href="<?= ch_get_option('favicon'); ?>"/>
 				
 				<?php wp_head();?>
-				<?= dynamic_css(); ?>
 			</head>
 			<body>
 				<section class="head">
@@ -50,8 +48,8 @@
 									<div class="toptabs mt25px">
 										<?php
 										for($i=1; $i <= 3; $i++){ ?>
-										<div class="single_tab_item" style="background:url('<?= $ch_data->ch_get_option('top_tabs_(item_'.$i.')_image'); ?>')">
-											<a href="<?= $ch_data->ch_get_option('top_tabs_(item_'.$i.')_url'); ?>"></a>
+										<div class="single_tab_item" style="background:url('<?= ch_get_option('top_tabs_(item_'.$i.')_image'); ?>')">
+											<a href="<?= ch_get_option('top_tabs_(item_'.$i.')_url'); ?>"></a>
 										</div>
 										<?php }
 										?>
@@ -63,7 +61,7 @@
 									<div class="hotline">
 										
 										
-										<span><h3><span class="glyphicon glyphicon-phone"></span><b>   <?= $ch_data->ch_get_option('hot_line'); ?></b></h3></span>
+										<span><h3><span class="glyphicon glyphicon-phone"></span><b>   <?= ch_get_option('hot_line'); ?></b></h3></span>
 									</div>
 								</div>
 							</div>
@@ -75,13 +73,13 @@
 						<div class="row">
 							<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 								<div class="logo">
-									<img src="<?= $ch_data->ch_get_option('logo'); ?>" alt="">
+									<img src="<?= ch_get_option('logo'); ?>" alt="">
 								</div>
 							</div>
 							<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
 								<div class="shipping_ad pull-right ">
-									<a href="<?= $ch_data->ch_get_option('top_banner_url'); ?>">
-										<img src="<?= $ch_data->ch_get_option('top_banner_image'); ?>" alt="">
+									<a href="<?= ch_get_option('top_banner_url'); ?>">
+										<img src="<?= ch_get_option('top_banner_image'); ?>" alt="">
 									</a>
 								</div>
 							</div>
@@ -92,8 +90,8 @@
 					<div class="container">
 						<nav class="menu">
 							<?php
-								if(has_nav_menu('top_menu')){
-									wp_nav_menu( 'top_menu');
+								if(has_nav_menu('top_menu')){ 
+									wp_nav_menu( array('theme_location' => 'top_menu') );
 								}
 							?>
 						</nav>
@@ -118,16 +116,42 @@
 				<section class="banner">
 					<div class="container">
 						<div class="banner_img mt30">
-							<img class="img-responsive" src="<?= $ch_data->ch_get_option('home_top_banner_image'); ?>" alt="Home Banner">
+							<img class="img-responsive" src="<?= ch_get_option('home_top_banner_image'); ?>" alt="Home Banner">
 						</div>
 					</div>
 				</section>
-				<section class="main_body">
+				<section class="main_body mt30">
 					<div class="container">
 						<div class="row">
-							<div class="col-xs-12 col-sm-2 col-md-2 col-lg-2">
-								
-							</div>
+							<aside class="col-xs-12 col-sm-2 col-md-2 col-lg-2 sidebar">
+								<h4>Most Popular Products</h4>
+								<?php 
+									$taxonomy     = 'product-category';
+									$orderby      = 'name';
+									$show_count   = 0;      // 1 for yes, 0 for no
+									$pad_counts   = 0;      // 1 for yes, 0 for no
+									$hierarchical = 1;      // 1 for yes, 0 for no
+									$title        = '';
+									$empty        = 1;		// 1 for yes, 0 for no
+
+									$args = array(
+									  'taxonomy'     => $taxonomy,
+									  'orderby'      => $orderby,
+									  'show_count'   => $show_count,
+									  'pad_counts'   => $pad_counts,
+									  'hierarchical' => $hierarchical,
+									  'title_li'     => $title,
+									  'hide_empty'   => $empty
+									);
+									?>
+									<ul class="sidebar_cat" data-role="listview">
+										<?php $variable = wp_list_categories( $args );
+										$variable = str_replace(array('(',')'), '', $variable);
+										$variable = str_replace('(', '<span class="ui-li-count">', $variable);
+										$variable = str_replace(')', '</span>', $variable);
+										echo $variable; ?>
+									</ul>
+							</aside>
 							<div class="col-xs-12 col-sm-10 col-md-10 col-lg-10">
 								
 									<?php 
@@ -140,9 +164,11 @@
 										$imgAlt = get_post_meta($thumbImage['id'], '_wp_attachment_image_alt', true);
 										$termChilds = get_term_children( $s_tax->term_id, 'product-category' );
 										?>
-											<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 singleItem">
+											<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 singleItem mb30">
 												<h4 class="text-center"><?= $s_tax->name; ?></h4>
-												<img class="img-responsive center-block" src="<?= $thumbImage['url']; ?>" alt="<?= $imgAlt; ?>">
+												<div class="img">
+													<img class="img-responsive center-block" src="<?= $thumbImage['url']; ?>" alt="<?= $imgAlt; ?>">
+												</div>
 												<ul class="list-group custom-list-group mt10">
 													<?php 
 														for($i = 0; count($termChilds) > $i; $i++){
@@ -155,15 +181,32 @@
 												</ul>
 
 											</div>
-											<?php echo ($l_count % 4 == 3 ) ? '</div>':''; ?>
+											<?php echo ($l_count % 4 == 3 ) ? '</div>':'';  ?>
 										<?php $l_count += 1; endforeach; ?>
 								
 							</div>
 						</div>
 					</div>
 				</section>
-
-				<script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-5392e56256f58ac5"></script>
+				<section class="footer top pt20">
+					<div class="container">
+						<div class="footerMenu center-block text-center">
+							<?php
+								if(has_nav_menu('footer_menu')){
+									wp_nav_menu( array('theme_location' => 'footer_menu') );
+								}
+							?>
+						</div>
+						<div class="payment center-block">
+							<?php if(!empty(ch_get_option('payment_gateway_logo'))): ?>
+							<img class="center-block mt10 mb10" src="<?= ch_get_option('payment_gateway_logo'); ?>" alt="Shopme Payment System">
+							<?php endif; ?>
+						</div>
+					</div>
+				</section>
+				<section class="footer bottom">
+					
+				</section>
 				<?php wp_footer();?>
 			</body>
 		</html>

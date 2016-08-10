@@ -28,9 +28,9 @@ if (!function_exists('addShopmeThemeScript')) {
 */
 register_nav_menus( array(
     'top_menu' => 'Site Main Menu',
+    'footer_menu' => 'Site Footer Menu',
 ) );
 
 require_once('ch_admin_option/admin-function.php');
-require_once('css/dynamic.php');
 require_once('inc_function/reg_custom_post.php');
 require_once('inc_function/metabox.php');

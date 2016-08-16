@@ -6,16 +6,30 @@ ob_start();
 require_once('save_option.php');
 require_once('css/dynamic.php');
 
+/*
+* data get function 
+*/
 function ch_get_option($rdata){
 	$ch_data = new ch_option;
 	return $ch_data->ch_get_opt($rdata);
 } 
 
+
+
+
+/*
+* Add menu item in admin 
+*/
 function addThemeMenuItem() {
 	//add_menu_page("Theme Panel", "Theme Panel", "manage_options", "theme-panel", "theme_settings_page", null, 99);
 	add_submenu_page('themes.php', "Theme Option", "Theme Option", "manage_options", "theme-panel", "themeSettingsPage", null, 99);
 }
-// Logo Uplode
+
+
+
+/*
+* Add Script Logo Uplode
+*/
 function wpGearManagerAdminScripts() {
 	// function for upload script
 	wp_enqueue_script('media-upload');
@@ -29,6 +43,13 @@ function wpGearManagerAdminScripts() {
 		}
 	}
 }
+
+
+
+
+/*
+* Add custom Style for admin 
+*/
 function wpGearManagerAdminStyles() {
 	//  function for upload style
 	wp_enqueue_style('thickbox');
@@ -38,6 +59,15 @@ function wpGearManagerAdminStyles() {
 add_action('admin_print_scripts', 'wpGearManagerAdminScripts');
 add_action('admin_print_styles', 'wpGearManagerAdminStyles');
 add_action("admin_menu", "addThemeMenuItem");
+
+
+
+
+
+
+/*
+* Main Theme Settings Page 
+*/
 function themeSettingsPage() {
 	$ch_data = new ch_option;
 	if(isset($_POST['submit'])){
@@ -182,6 +212,11 @@ function themeSettingsPage() {
 					'type'	=> 	'color_picker'
 				),
 				array(
+					'title'	=> 	'Button Color',
+					'note'	=>	'All Button Default Color',
+					'type'	=> 	'color_picker'
+				),
+				array(
 					'title'	=> 	'Link Text Color',
 					'note'	=>	'Link Text Color',
 					'type'	=> 	'color_picker'
@@ -217,6 +252,11 @@ function themeSettingsPage() {
 					'type' => 'radio',
 					'nature' => 'animation',
 					'radio_value' => array('left', 'right')
+				),
+				array(
+					'title'	=>	'Widget Title Background',
+					'note'	=> 	'Choose Widget Title Background Image',
+					'type'	=> 	'upload'
 				)
 			),
 			'template layout' => array(
@@ -374,6 +414,7 @@ function themeSettingsPage() {
 								case 'upload':
 								?>
 								<div class="partRight">
+									<input type="hidden" value="<?= $ch_data->ch_get_opt($singBody[$i]['title'] . '_id'); ?>" name="<?=$ch_data->ch_stringReplace($singBody[$i]['title']) . '_id';?>"/>
 									<input type="text" value="<?= $ch_data->ch_get_opt($singBody[$i]['title']); ?>" name="<?=$ch_data->ch_stringReplace($singBody[$i]['title']);?>" id="id-<?=$ch_data->ch_stringReplace($singBody[$i]['title']);?>"/>
 									<button class="button button-submit add-image">Add Image</button>
 								</div>
@@ -435,6 +476,7 @@ function themeSettingsPage() {
 								break;
 								case 'list':
 								?>
+									<div class=""></div>
 									<div class="partRight listStyle">
 										<?php 
 											foreach($singBody[$i]['item'] as $s_item):
@@ -442,6 +484,7 @@ function themeSettingsPage() {
 												switch($s_item):
 													case 'image':
 														echo '<span><b>'.	$s_item.'</b></span>';
+														echo '<input type="hidden" value="'.$ch_data->ch_get_opt($singBody[$i]['title'].'_'.$s_item .'_id').'" name="'.$ch_data->ch_stringReplace($singBody[$i]['title'].'_'.$s_item). '_id' .'"/>';
 														echo '<input type="text" value="'.$ch_data->ch_get_opt($singBody[$i]['title'].'_'.$s_item).'" name="'.$ch_data->ch_stringReplace($singBody[$i]['title'].'_'.$s_item).'"/>';
 														echo '<button class="button button-submit add-image">Add Image</button>';
 														if(!empty($ch_data->ch_get_opt($singBody[$i]['title'].'_'.$s_item))){
@@ -465,11 +508,13 @@ function themeSettingsPage() {
 								<?php endswitch;?>
 								<div class="imgPreview">
 									<span><i><?=$singBody[$i]['note'];?></i></span>
-									<?php 	
-									if($singBody[$i]['type'] == 'upload' && !empty($ch_data->ch_get_opt($singBody[$i]['title']) ) ) {
-										echo '<img src="'.$ch_data->ch_get_opt($singBody[$i]['title']).'" alt="'.$singBody[$i]['title'].'">';
-									}
-									?>
+									<div class="img">
+										<?php 	
+										if($singBody[$i]['type'] == 'upload' && !empty($ch_data->ch_get_opt($singBody[$i]['title']) ) ) {
+											echo '<img src="'.$ch_data->ch_get_opt($singBody[$i]['title']).'" alt="'.$singBody[$i]['title'].'">';
+										}
+										?>
+									</div>
 								</div>
 							</div>
 							<?php endfor;?>

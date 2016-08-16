@@ -361,3 +361,6 @@ li.section_setting{
 .sectionhead h3 {
     text-transform: capitalize;
 }
+.imgPreview .img {
+    display: inline;
+}

@@ -27,7 +27,8 @@ jQuery(document).ready(function($){
 		mediaUploader.on('select', function() {
 		  attachment = mediaUploader.state().get('selection').first().toJSON();
 		  this_val.prev('input').val(attachment.url);
-		  this_val.closest('.partRight').next('.imgPreview').append('<img src="'+attachment.url+'" alt="Logo"/>');
+          this_val.prev('input').prev('input').val(attachment.id);
+		  this_val.closest('.partRight').next('.imgPreview').children('.img').html('<img src="'+attachment.url+'" alt="Logo"/>');
 		});
 		// Open the uploader dialog
 		mediaUploader.open();

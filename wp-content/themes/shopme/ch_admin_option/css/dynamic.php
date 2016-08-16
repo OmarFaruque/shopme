@@ -317,7 +317,7 @@ function dynamic_css(){
 		$css .= $get_option['custom_css_code']; 
 	}
 	if(!empty($get_option['link_text_color'])){
-		$css .= 'section.main_body li a, section.footer li a { color: '.$get_option['link_text_color'].'; }';
+		$css .= 'ul.sidebar_cat.inner_page li a, section.main_body li a, section.footer li a { color: '.$get_option['link_text_color'].'; }';
 	}
 	if(!empty($get_option['default_heading_color'])){
 		$css .= 'h1, h2, h3, h4, h5, h6, ul.sidebar_cat > li > a { color: '.$get_option['default_heading_color'].'; }';
@@ -334,6 +334,13 @@ function dynamic_css(){
 	if(!empty($get_option['footer_background_taxture'])){
 		$css .= 'section.footer.top {   background-image: url('.$get_option['footer_background_taxture'].'); }';
 	}
+	if(!empty($get_option['widget_title_background'])){
+		$css .= 'h3.page_title_widget {   background-image: url('.$get_option['widget_title_background'].'); }';
+	}
+	if(!empty($get_option['button_color'])){
+		$css .= '.read_more {   background-color: '.$get_option['button_color'].'; }';
+	}
+	//Widget Title Background
 	$css .= '</style>';
 	echo $css;
 }

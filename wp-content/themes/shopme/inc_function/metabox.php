@@ -21,12 +21,17 @@ function product_meta_box_callback($post){
     $prfx_stored_meta = get_post_meta( $post->ID );
 
 
+    $model 				= 	get_post_meta($post->ID, 'model', true);
     $price 				= 	get_post_meta($post->ID, 'price', true);
     $free_shipping 		= 	get_post_meta($post->ID, 'free_shipping', true);
 
+    /* Model */
+    echo '<label for="model">Model:</label>';
+    echo '<input id="model" style="width: 100%;vertical-align: middle;" type="text" name="model" value="'.$model.'"/><br/>';
+
     /* Ragular Price */
     echo '<label for="price">Ragular Price:</label>';
-    echo '<input id="price" style="width: 50%; margin-left: 10px; vertical-align: middle;" type="number" min="0" name="price" value="'.$price.'"/><br/><hr/>';
+    echo '<input id="price" style="width: 100%; vertical-align: middle;" type="number" min="0" name="price" value="'.$price.'"/><br/>';
     
     /**/
     echo '<label for="free_shipping">Free Shipping Msg.</label>';
@@ -71,10 +76,12 @@ function save_meta_box_data( $post_id ) {
 	}
 
 	// Background Meta get Post  background_position
+	$post_model = sanitize_text_field($_POST['model']); 
 	$post_price = sanitize_text_field($_POST['price']); 
 	$post_freeShipping = sanitize_text_field($_POST['free_shipping']);
 
 	// Update the meta field in the database.
+	update_post_meta( $post_id, 'model', $post_model);
 	update_post_meta( $post_id, 'price', $post_price);
 	update_post_meta( $post_id, 'free_shipping', $post_freeShipping);
 }

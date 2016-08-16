@@ -1,0 +1,85 @@
+<?php
+/*
+ * Taxonomy Product Category
+ */
+get_header();
+?>
+<?php
+//first get the current term
+$current_term = get_term_by('slug', get_query_var('term'), get_query_var('taxonomy'));
+$termchildren = get_term_children($current_term->term_id, $current_term->taxonomy);
+$banerID      = (count($termchildren) <= 0)?$current_term->parent:$current_term->term_id;
+
+$baerArray = get_tax_meta($banerID, 'ba_category_banner_id');
+$banerAlt  = get_post_meta($baerArray['id'], '_wp_attachment_image_alt', true);?>
+	<div class="banner">
+		<img class="img-responsive" src="<?=$baerArray['url']?>" alt="<?=$banerAlt;?>">
+	</div>
+	<div class="row">
+<?php
+if (count($termchildren) > 0) {?>
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<h2 class="mb50 mt0">All Departments</h2>
+					</div>
+	<?php foreach ($termchildren as $sTerms):
+	$term = get_term_by('id', $sTerms, $current_term->taxonomy);
+	if ($term->count > 0) {
+		$thumbImage = get_tax_meta($term->term_id, 'ba_image_field_id');
+		$imgAlt     = get_post_meta($thumbImage['id'], '_wp_attachment_image_alt', true);?>
+									<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 mb30">
+										<a href="<?=home_url('/product-category/'.$term->slug.'/');?>">
+											<div class="img">
+												<img class="img-responsive center-block" src="<?=$thumbImage['url'];?>" alt="<?=$imgAlt;?>">
+											</div>
+											<h5 class="text-center"><?=$term->name;?></h5>
+										</a>
+									</div>
+		<?php }
+	endforeach;
+} else {
+	?>
+					<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+						<h2 class="mb0 mt0"><?=$current_term->name;?></h2>
+						<hr class="mt0 mb30 gray" />
+
+	<?php
+	if (have_posts()):
+	$l_count = 0;
+	while (have_posts()):
+	the_post();
+	echo ($l_count%4 == 0)?'<div class="s_box product_listing_grid">':'';
+	?>
+								<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 mb10 productList">
+									<a href="<?=get_permalink();?>">
+										<div class="img mb10">
+	<?php
+	setlocale(LC_MONETARY, 'en_US');
+	$price = get_post_meta($post->ID, 'price', true);
+	if (has_post_thumbnail()) {
+		the_post_thumbnail('thumb');
+	}
+	?>
+										</div>
+										<p class="text-center singleProTitle"><?=get_the_title();?></p>
+									</a>
+									<p class="Price text-center"><b>Our Price: </b>
+										<span class="text-danger">
+										    <strong>Tk. </strong> <?=number_format($price, 2);?>
+										</span>
+									</p>
+									<a href="<?=get_permalink();?>" class="text-center btn btn-info center-block read_more">Read More</a>
+									<p class="info text-center text-danger mt15">
+										<strong>Free Shipping Under Dhaka City</strong>
+									</p>
+								</div>
+	<?php
+	echo ($l_count%4 == 3)?'</div>':'';
+	$l_count++;
+	endwhile;
+	endif;?>
+	</div>
+	<?php }
+?>
+</div>
+	<br clear="both">
+<?php get_footer();?>

@@ -84,7 +84,6 @@ class main_sidebar extends WP_Widget{
     }
 
 }
-
 /*
 * Register Widget
 */
@@ -98,3 +97,103 @@ add_action( 'widgets_init', function(){
 
 
 
+
+
+
+/**
+ * new WordPress Widget format
+ * Wordpress Latest
+ * @see http://codex.wordpress.org/Widgets_API#Developing_Widgets
+ */
+class queryLetter extends WP_Widget {
+
+    /**
+     * Sets up the widgets name etc
+     */
+    public function __construct() {
+        $widget_ops = array( 
+            'classname' => 'queryLetter',
+            'description' => 'Widget for Sidebar Query Letter',
+        );
+        parent::__construct( 'queryLetter', 'Query Letter', $widget_ops );
+    }
+
+    /**
+     * Outputs the content of the widget
+     *
+     * @param array $args
+     * @param array $instance
+     */
+    public function widget( $args, $instance ) {
+        // outputs the content of the widget
+        echo $args['before_widget'];
+        // custom code
+        ?>
+        <div class="quoteLetter">
+        <?php
+            if(!empty($instance['title'])){
+                echo $args['before_title'];
+                echo $instance['title'];
+                echo $args['after_title'];
+            }
+        ?>
+            <blockquote>
+                <p class="text-center">Send a query if you want to know more.</p>
+            </blockquote>
+            <form class="text-center" action="<?= get_permalink($instance['action']); ?>" method="GET" accept-charset="utf-8">
+              <input type="email" name="email" value="" placeholder="example@example.com">  
+              <input class="btn btn-inverse btn-dark" type="submit" name="submit" value="Submit">
+              
+            </form>
+
+        </div>
+        <?php
+        echo $args['after_widget'];
+
+    }
+
+    /**
+     * Outputs the options form on admin
+     *
+     * @param array $instance The widget options
+     */
+    public function form( $instance ) {
+        // outputs the options form on admin
+         $title = ! empty( $instance['title'] ) ? $instance['title'] : __( '', '' ); 
+         $action = ! empty( $instance['action'] ) ? $instance['action'] : __( '', '' ); 
+         ?>
+           <p>
+                <label for="<?php echo $this->get_field_id('title'); ?>"><?php _e('Title'); ?></label>
+                <input class="widefat" id="<?php echo $this->get_field_id('title'); ?>" name="<?php echo $this->get_field_name('title'); ?>" type="text" value="<?php echo $title; ?>" />
+           </p>
+           <p>
+                <label for="<?php echo $this->get_field_id('action'); ?>"><?php _e('Action'); ?></label>
+                <select class="widefat" for="<?php echo $this->get_field_id('action'); ?>" name="<?php echo $this->get_field_name('action'); ?>">
+                    <?php  $allPages = get_all_page_ids(); ?>
+                    <option value="">Set Action Page</option>
+                    <?php foreach( $allPages as $page): ?>
+                        <option <?= ($action == $page)?'selected':''; ?> value="<?= $page; ?>"><?= get_the_title($page); ?></option>
+                    <?php endforeach; ?>
+                </select>
+           </p>
+    <?php }
+
+    /**
+     * Processing widget options on save
+     *
+     * @param array $new_instance The new options
+     * @param array $old_instance The previous options
+     */
+    public function update( $new_instance, $old_instance ) {
+        // processes widget options to be saved
+        $instance = array();
+        //$instance = $old_instance;
+        $instance['title'] = ( ! empty( $new_instance['title'] ) ) ? strip_tags( $new_instance['title'] ) : '';
+        $instance['action'] = ( ! empty( $new_instance['action'] ) ) ? strip_tags( $new_instance['action'] ) : '';
+        return $instance;
+    }
+}
+
+add_action( 'widgets_init', function(){
+    register_widget( 'queryLetter' );
+});

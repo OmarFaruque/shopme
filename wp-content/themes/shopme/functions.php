@@ -52,6 +52,31 @@ function shopme_widget_init() {
     ) );
 }
 
+
+
+/*
+* Mail Function 
+*/
+if(!function_exists('send_email')){
+    function send_email($post, $file){
+        echo '<pre>';
+        print_r($post);
+        echo '</pre>';
+        echo 'file: <br/>';
+        echo '<pre>';
+        print_r($file);
+        echo '</pre>';
+
+        move_uploaded_file($file["attachment"]["tmp_name"],WP_CONTENT_DIR .'/uploads/mail_upload/'.basename($file['attachment']['name']));
+
+        $attachments = array( WP_CONTENT_DIR . '/uploads/mail_upload/'.basename($file['attachment']['name']) );
+        $headers = 'From: My Name <myname@example.com>' . "\r\n";
+        wp_mail( 'it@greendotbd.com', 'subject', 'message', $headers, $attachments );
+    }
+}
+
+
+
 require_once('ch_admin_option/admin-function.php');
 require_once('inc_function/reg_custom_post.php');
 require_once('inc_function/metabox.php');

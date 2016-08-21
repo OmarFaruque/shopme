@@ -4,9 +4,9 @@
 */
 get_header( );
 global $post;
-unset($_POST['submit']);
-send_email($_POST, $_FILES);
-
+	if(isset($_POST['email'])){
+		send_email($_POST, $_FILES);	
+	}
 ?>
 <div class="page_contactus">
 	<div class="jumbotron jumbotron-fluid jumbotron-custom mt30">
@@ -15,7 +15,7 @@ send_email($_POST, $_FILES);
 	<form enctype="multipart/form-data" action="<?= get_permalink($post->ID); ?>" method="POST" accept-charset="utf-8">
 		<fieldset class="form-group">
 			<label for="name">Name</label>
-			<input name="name" type="text" value="" class="form-control" id="name" placeholder="Enter Full Name">
+			<input name="p_name" type="text" value="" class="form-control" id="name" placeholder="Enter Full Name">
 		</fieldset><br/>
 
 		<fieldset class="form-group">
@@ -30,11 +30,20 @@ send_email($_POST, $_FILES);
 		<fieldset class="form-group">
 			<label for="product_select">Product select</label>
 			<select multiple="multiple" class="form-control" id="product_select" name="product_select[]">
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-				<option value="4">4</option>
-				<option value="5">5</option>
+				<?php 	/**
+					 * The WordPress Query class.
+					 * @link http://codex.wordpress.org/Function_Reference/WP_Query
+					 *
+					 */
+					$args = array(
+						//Type & Status Parameters
+						'post_type'   => 'product',
+						'post_status' => 'publish');
+					$products = new WP_Query( $args );  
+					if($products->have_posts()): while($products->have_posts()): $products->the_post();
+					?>
+					<option value="<?= get_the_title(); ?>"><?= get_the_title(); ?></option>
+				<?php endwhile; endif;  ?>
 			</select>
 			<small class="text-muted">Press 'Ctrl' from keyboard for <b>Multiple</b> select.</small>
 		</fieldset><br/>

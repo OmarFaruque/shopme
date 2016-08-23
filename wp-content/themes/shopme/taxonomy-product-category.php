@@ -27,7 +27,7 @@ $banerAlt = get_post_meta($baerArray['id'], '_wp_attachment_image_alt', true); ?
 						if( $term->count > 0 ){
 							$thumbImage = get_tax_meta($term->term_id,'ba_image_field_id');
 							$imgAlt = get_post_meta($thumbImage['id'], '_wp_attachment_image_alt', true); ?>
-							<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 mb30">
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 mb30">
 								<a href="<?= home_url('/product-category/' . $term->slug . '/' ); ?>">
 									<div class="img">
 										<img class="img-responsive center-block" src="<?= $thumbImage['url']; ?>" alt="<?= $imgAlt; ?>">
@@ -50,7 +50,7 @@ $banerAlt = get_post_meta($baerArray['id'], '_wp_attachment_image_alt', true); ?
 						the_post(); 
 						echo ($l_count % 4 == 0 ) ? '<div class="s_box product_listing_grid">':'';
 					?>
-							<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 mb10 productList">
+							<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 mb10 productList">
 								<a href="<?= get_permalink(); ?>">
 									<div class="img mb10">
 										<?php

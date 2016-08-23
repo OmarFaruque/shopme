@@ -13,7 +13,7 @@ get_header();
 										$imgAlt = get_post_meta($thumbImage['id'], '_wp_attachment_image_alt', true);
 										$termChilds = get_term_children( $s_tax->term_id, 'product-category' );
 										?>
-											<div class="col-xs-12 col-sm-3 col-md-3 col-lg-3 singleItem mb30">
+											<div class="col-xs-12 col-sm-6 col-md-3 col-lg-3 singleItem mb30">
 												<a href="<?= home_url('/product-category/' . $s_tax->slug . '/' ); ?>">
 													<h4 class="text-center"><?= $s_tax->name; ?></h4>
 													<div class="img">

@@ -1,6 +1,6 @@
-<?php 
+<?php
 /*
-* shopme header 
+* shopme header
 */
 ?>
 <!DOCTYPE html>
@@ -95,8 +95,14 @@
 				<section class="top_menu dynamicMenu">
 					<div class="container">
 						<nav class="menu">
+							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-nav">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							</button>
 							<?php
-								if(has_nav_menu('top_menu')){ 
+								if(has_nav_menu('top_menu')){
 									wp_nav_menu( array('theme_location' => 'top_menu') );
 								}
 							?>
@@ -106,15 +112,15 @@
 				<section class="search">
 					<div class="container">
 						<div class="row">
-							<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 pdr0">
+							<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 pdrd0">
 								<div class="searchform">
 									<?php get_search_form( $echo = true ); ?>
 								</div>
 							</div>
-							<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 topinnershadow pdl0">
+							<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6 topinnershadow pdld0">
 								<div class="save">
-									        <h4 class="text-center text-danger">Save, Save, Save</h4>
-								</div>	
+									<h4 class="text-center text-danger">Save, Save, Save</h4>
+								</div>
 							</div>
 						</div>
 					</div>
@@ -134,14 +140,14 @@
 							<?php if(!is_singular('product')): ?>
 							<?php get_sidebar(); ?>
 							<div class="col-xs-12 col-sm-9 col-md-9 col-lg-9">
-							<?php else: ?>
-							<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-							<?php endif; ?>
-							<?php if(!(is_home() || is_singular( 'product' ) ) ): ?>
-							<div class="breadcrumbs" typeof="BreadcrumbList" vocab="http://schema.org/">
-							    <?php if(function_exists('bcn_display'))
-							    {
-							        bcn_display();
-							    }?>
-							</div>
-							<?php endif; ?>
+								<?php else: ?>
+								<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+									<?php endif; ?>
+									<?php if(!(is_home() || is_singular( 'product' ) ) ): ?>
+									<div class="breadcrumbs" typeof="BreadcrumbList" vocab="http://schema.org/">
+										<?php if(function_exists('bcn_display'))
+										{
+										bcn_display();
+										}?>
+									</div>
+									<?php endif; ?>

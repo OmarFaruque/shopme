@@ -340,6 +340,9 @@ function dynamic_css(){
 	if(!empty($get_option['button_color'])){
 		$css .= '.read_more {   background-color: '.$get_option['button_color'].'; }';
 	}
+	if(!empty($get_option['second_color'])){
+		$css .= '.hotline h3, .navbar-toggle {   background-color: '.$get_option['second_color'].'; }';
+	}
 	//Widget Title Background
 	$css .= '</style>';
 	echo $css;
